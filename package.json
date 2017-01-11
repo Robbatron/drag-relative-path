@@ -1,0 +1,19 @@
+{
+  "name": "drag-relative-path",
+  "main": "./lib/drag-relative-path",
+  "version": "0.0.0",
+  "description": "Drag files from the tree-view (or externally) to create HTML tags with automatic relative paths",
+  "keywords": [
+    "drag and drop",
+    "relative path",
+    "html tags"
+  ],
+  "repository": "https://github.com/atom/drag-relative-path",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "relative": "^3.0.2"
+  }
+}
