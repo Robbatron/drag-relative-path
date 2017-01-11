@@ -2,4 +2,4 @@
 
 Drag files from the tree-view (or externally) to create HTML tags with automatic relative paths
 
-![](http://i.imgur.com/vHeIyW2.gifv)
+![](http://i.imgur.com/vHeIyW2.gif)
