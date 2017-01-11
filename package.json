@@ -1,7 +1,7 @@
 {
   "name": "drag-relative-path",
   "main": "./lib/drag-relative-path",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Drag files from the tree-view (or externally) to create HTML tags with automatic relative paths",
   "keywords": [
     "drag and drop",
