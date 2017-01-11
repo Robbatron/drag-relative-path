@@ -8,7 +8,7 @@
     "relative path",
     "html tags"
   ],
-  "repository": "https://github.com/atom/drag-relative-path",
+  "repository": "https://github.com/Robbatron/drag-relative-path.git",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
