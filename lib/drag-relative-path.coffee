@@ -32,6 +32,7 @@ intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName,
         'gif'
         'svg'
         'bmp'
+        'webp'
     ]
     if currentPathFileExtension.toString() == 'html'
         if scriptArray.includes(fileExtension)
