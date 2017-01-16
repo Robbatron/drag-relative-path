@@ -33,6 +33,7 @@ intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName,
         'svg'
         'bmp'
     ]
+
     if currentPathFileExtension.toString() == 'html'
         if scriptArray.includes(fileExtension)
             generateTag fileExtension, 'js', relativePath, fileName, textEditor
@@ -49,27 +50,34 @@ module.exports = activate: (state) ->
         textEditorElement = atom.views.getView(textEditor)
         textEditorElement.addEventListener 'drop', (e) ->
             relativePath = undefined
-            currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
-            currentPathFileExtension = currentPath.split('.').pop()
             if e.dataTransfer.files.length
                 files = e.dataTransfer.files
                 i = 0
                 while i < files.length
                     file = files[i]
-                    extFileExtension = file.path.split('.').pop()
-                    relativize = atom.project.relativizePath(file.path)
-                    relativePath = relative(currentPath, relativize[1])
-                    fileName = relativePath.split('/').slice(-1).join().split('.').shift()
-                    e.preventDefault()
-                    e.stopPropagation()
-                    intOrExtDrag currentPathFileExtension, extFileExtension, relativePath, fileName, textEditor
-                    i++
+                    f = file.name
+                    if f.indexOf(".") == -1 # folders will not have an extension
+                      return
+                    else
+                      currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                      currentPathFileExtension = currentPath.split('.').pop()
+                      extFileExtension = file.path.split('.').pop()
+                      relativize = atom.project.relativizePath(file.path)
+                      relativePath = relative(currentPath, relativize[1])
+                      fileName = relativePath.split('/').slice(-1).join().split('.').shift()
+                      e.preventDefault()
+                      e.stopPropagation()
+                      intOrExtDrag currentPathFileExtension, extFileExtension, relativePath, fileName, textEditor
+                      i++
             else
-                dragPath = document.querySelector('.file.entry.list-item.selected>span').dataset.path
-                relativePath = relative(currentPath, dragPath)
-                fileName = relativePath.split('/').slice(-1).join().split('.').shift()
-                intFileExtension = relativePath.split('.').pop()
-                intOrExtDrag currentPathFileExtension, intFileExtension, relativePath, fileName, textEditor
+                if document.querySelector('.file.entry.list-item.selected') # check if a file is dropped
+                  dragPath = document.querySelector('.file.entry.list-item.selected>span').dataset.path
+                  currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                  currentPathFileExtension = currentPath.split('.').pop()
+                  relativePath = relative(currentPath, dragPath)
+                  fileName = relativePath.split('/').slice(-1).join().split('.').shift()
+                  intFileExtension = relativePath.split('.').pop()
+                  intOrExtDrag currentPathFileExtension, intFileExtension, relativePath, fileName, textEditor
             return
     )
     return
