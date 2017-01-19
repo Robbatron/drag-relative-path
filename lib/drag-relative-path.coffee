@@ -57,10 +57,11 @@ module.exports = activate: (state) ->
                 while i < files.length
                     file = files[i]
                     f = file.name
-                    if f.indexOf(".") == -1 # folders will not have an extension
+                    if f.indexOf(".") == -1
                       return
                     else
                       currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                      unless typeof currentPath isnt "undefined" then return
                       currentPathFileExtension = currentPath.split('.').pop()
                       extFileExtension = file.path.split('.').pop()
                       relativize = atom.project.relativizePath(file.path)
@@ -74,6 +75,7 @@ module.exports = activate: (state) ->
                 if document.querySelector('.file.entry.list-item.selected') # check if a file is dropped
                   dragPath = document.querySelector('.file.entry.list-item.selected>span').dataset.path
                   currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                  unless typeof currentPath isnt "undefined" then return
                   currentPathFileExtension = currentPath.split('.').pop()
                   relativePath = relative(currentPath, dragPath)
                   fileName = relativePath.split('/').slice(-1).join().split('.').shift()

@@ -8,3 +8,6 @@
 
 ## 1.0.2
 * Refactor to prevent "Uncaught TypeError: Cannot read property 'split' of undefined" issue
+
+## 1.0.3
+* Fixed bug that was causing "Uncaught TypeError: Cannot read property 'split' of undefined" to happen when files were being dragged into an untitled tab.
