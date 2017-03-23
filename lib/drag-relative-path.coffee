@@ -12,7 +12,7 @@ generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
     }[extension]
     return
 
-intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName, textEditor) ->
+intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName, textEditor, selectedFiles, currentPath) ->
     scriptArray = [
         'js'
         'jsx'
@@ -34,18 +34,21 @@ intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName,
         'bmp'
         'webp'
     ]
-
-    if currentPathFileExtension.toString() == 'html'
-        if scriptArray.includes(fileExtension)
-            generateTag fileExtension, 'js', relativePath, fileName, textEditor
-        if linkArray.includes(fileExtension)
-            generateTag fileExtension, 'css', relativePath, fileName, textEditor
-        if imageArray.includes(fileExtension)
-            generateTag fileExtension, 'img', relativePath, fileName, textEditor
+    count = 0
+    while count < selectedFiles.length
+      if currentPathFileExtension.toString() == 'html'
+          if scriptArray.includes(fileExtension)
+              generateTag fileExtension, 'js', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+          if linkArray.includes(fileExtension)
+              generateTag fileExtension, 'css', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+          if imageArray.includes(fileExtension)
+              generateTag fileExtension, 'img', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+      else
+        textEditor.insertText relative currentPath, selectedFiles[count].file.path + '\n\t\t'
+      count++
     return
 
 module.exports = activate: (state) ->
-
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.workspace.observeTextEditors((textEditor) ->
         textEditorElement = atom.views.getView(textEditor)
@@ -72,7 +75,8 @@ module.exports = activate: (state) ->
                       intOrExtDrag currentPathFileExtension, extFileExtension, relativePath, fileName, textEditor
                       i++
             else
-                if document.querySelector('.file.entry.list-item.selected') # check if a file is dropped
+                selectedFiles = document.querySelectorAll('.file.entry.list-item.selected')
+                if selectedFiles # check if a file is dropped
                   dragPath = document.querySelector('.file.entry.list-item.selected>span').dataset.path
                   currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
                   unless typeof currentPath isnt "undefined" then return
@@ -80,7 +84,7 @@ module.exports = activate: (state) ->
                   relativePath = relative(currentPath, dragPath)
                   fileName = relativePath.split('/').slice(-1).join().split('.').shift()
                   intFileExtension = relativePath.split('.').pop()
-                  intOrExtDrag currentPathFileExtension, intFileExtension, relativePath, fileName, textEditor
+                  intOrExtDrag currentPathFileExtension, intFileExtension, relativePath, fileName, textEditor, selectedFiles, currentPath
             return
     )
     return
