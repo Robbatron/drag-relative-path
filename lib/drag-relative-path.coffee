@@ -77,9 +77,7 @@ module.exports = activate: (state) ->
             else
                 selectedFiles = document.querySelectorAll('.file.entry.list-item.selected')
                 selectedSpan = document.querySelector('.file.entry.list-item.selected>span')
-                console.log("before:", selectedSpan)
                 if selectedFiles and selectedSpan # check if a file is dropped
-                  console.log("after", selectedSpan)
                   dragPath = selectedSpan.dataset.path
                   currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
                   unless typeof currentPath isnt "undefined" then return
