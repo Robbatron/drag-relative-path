@@ -4,11 +4,11 @@ relative = require 'relative'
 generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
     type = undefined
     if fileExtension != extension and extension != 'img'
-        textEditor.insertText '<!-- Converted from ' + fileExtension + ' -->\n\u0009'
+        textEditor.insertText '<!-- Converted from ' + fileExtension + ' -->\n'
     textEditor.insertText type = {
-        'js': '<script src="' + relativePath.replace(fileExtension, extension) + '"></script>\n\u0009'
-        'css': '<link href="' + relativePath.replace(fileExtension, extension) + '" rel="stylesheet">\n\u0009'
-        'img': '<img src="' + relativePath + '" alt="' + fileName + '">\n\u0009'
+        'js': '<script src="' + relativePath.replace(fileExtension, extension) + '"></script>\n'
+        'css': '<link href="' + relativePath.replace(fileExtension, extension) + '" rel="stylesheet">\n'
+        'img': '<img src="' + relativePath + '" alt="' + fileName + '">\n'
     }[extension]
     return
 
@@ -44,7 +44,7 @@ intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName,
           if imageArray.includes(fileExtension)
               generateTag fileExtension, 'img', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
       else
-        textEditor.insertText relative currentPath, selectedFiles[count].file.path + '\n\t\t'
+        textEditor.insertText relative currentPath, selectedFiles[count].file.path + '\n'
       count++
     return
 
@@ -76,8 +76,11 @@ module.exports = activate: (state) ->
                       i++
             else
                 selectedFiles = document.querySelectorAll('.file.entry.list-item.selected')
-                if selectedFiles # check if a file is dropped
-                  dragPath = document.querySelector('.file.entry.list-item.selected>span').dataset.path
+                selectedSpan = document.querySelector('.file.entry.list-item.selected>span')
+                console.log("before:", selectedSpan)
+                if selectedFiles and selectedSpan # check if a file is dropped
+                  console.log("after", selectedSpan)
+                  dragPath = selectedSpan.dataset.path
                   currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
                   unless typeof currentPath isnt "undefined" then return
                   currentPathFileExtension = currentPath.split('.').pop()
