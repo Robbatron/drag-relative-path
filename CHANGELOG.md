@@ -12,6 +12,9 @@
 ## 1.0.3
 * Fixed bug that was causing "Uncaught TypeError: Cannot read property 'split' of undefined" to happen when files were being dragged into an untitled tab.
 
-## 1.1.3
+## 1.1.2
 * Allow dragging of relative path to files other than html
 * Ability to drag multiple files
+
+## 1.1.3
+* Update from deprecated methods and misc fixes

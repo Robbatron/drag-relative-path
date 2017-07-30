@@ -13,38 +13,23 @@ generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
     return
 
 intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName, textEditor, selectedFiles, currentPath) ->
-    scriptArray = [
-        'js'
-        'jsx'
-        'coffee'
-    ]
-    linkArray = [
-        'css'
-        'scss'
-        'less'
-    ]
-    imageArray = [
-        'jpg'
-        'jpeg'
-        'png'
-        'apng'
-        'ico'
-        'gif'
-        'svg'
-        'bmp'
-        'webp'
-    ]
+
+    scriptArray = ['js', 'jsx', 'coffee']
+    linkArray = ['css', 'scss', 'less']
+    imageArray = ['jpg', 'jpeg', 'png', 'apng', 'ico' ,'gif' ,'svg' ,'bmp' ,'webp']
+
     count = 0
     while count < selectedFiles.length
+      selected = selectedFiles[count].file?.path || selectedFiles[count].path
       if currentPathFileExtension.toString() == 'html'
           if scriptArray.includes(fileExtension)
-              generateTag fileExtension, 'js', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+              generateTag fileExtension, 'js', relative(currentPath, selected), fileName, textEditor
           if linkArray.includes(fileExtension)
-              generateTag fileExtension, 'css', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+              generateTag fileExtension, 'css', relative(currentPath, selected), fileName, textEditor
           if imageArray.includes(fileExtension)
-              generateTag fileExtension, 'img', relative(currentPath, selectedFiles[count].file.path), fileName, textEditor
+              generateTag fileExtension, 'img', relative(currentPath, selected), fileName, textEditor
       else
-        textEditor.insertText relative currentPath, selectedFiles[count].file.path + '\n'
+        textEditor.insertText "'#{relative currentPath, selected}'" + '\n'
       count++
     return
 
@@ -63,7 +48,7 @@ module.exports = activate: (state) ->
                     if f.indexOf(".") == -1
                       return
                     else
-                      currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                      currentPath = textEditor.buffer.file.path
                       unless typeof currentPath isnt "undefined" then return
                       currentPathFileExtension = currentPath.split('.').pop()
                       extFileExtension = file.path.split('.').pop()
@@ -72,14 +57,14 @@ module.exports = activate: (state) ->
                       fileName = relativePath.split('/').slice(-1).join().split('.').shift()
                       e.preventDefault()
                       e.stopPropagation()
-                      intOrExtDrag currentPathFileExtension, extFileExtension, relativePath, fileName, textEditor
+                      intOrExtDrag currentPathFileExtension, extFileExtension, relativePath, fileName, textEditor, files, currentPath
                       i++
             else
                 selectedFiles = document.querySelectorAll('.file.entry.list-item.selected')
                 selectedSpan = document.querySelector('.file.entry.list-item.selected>span')
                 if selectedFiles and selectedSpan # check if a file is dropped
                   dragPath = selectedSpan.dataset.path
-                  currentPath = if (ref = atom.workspace.getActivePaneItem()) != null then (if (ref1 = ref.buffer) != null then (if (ref2 = ref1.file) != null then ref2.path else undefined) else undefined) else undefined
+                  currentPath = textEditor.buffer.file.path
                   unless typeof currentPath isnt "undefined" then return
                   currentPathFileExtension = currentPath.split('.').pop()
                   relativePath = relative(currentPath, dragPath)
