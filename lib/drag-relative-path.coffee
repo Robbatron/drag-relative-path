@@ -10,7 +10,7 @@ generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
         'css': '<link href="' + relativePath.replace(fileExtension, extension) + '" rel="stylesheet">\n'
         'html': '<a href="' + relativePath.replace(fileExtension, extension) + '"></a>\n'
         'php': '<a href="' + relativePath.replace(fileExtension, extension) + '"></a>\n'
-        'img': '<img src="' + relativePath + '" alt="' + fileName + '">\n'
+        'img': '<img src="' + relativePath + '" alt="">\n'
         'video': '<video src="' + relativePath + '" controls></video>\n'
         'audio': '<audio src="' + relativePath + '" controls></audio>\n'
     }[extension]
