@@ -8,7 +8,7 @@ generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
   textEditor.insertText type = {
     'js': '<script src="' + relativePath.replace(fileExtension, extension) + '"></script>\n'
     'css': '<link href="' + relativePath.replace(fileExtension, extension) + '" rel="stylesheet">\n'
-    'img': '<img src="' + relativePath + '" alt="' + fileName + '">\n'
+    'img': '<img src="' + relativePath + '" alt="">\n'
   }[extension]
   return
 
