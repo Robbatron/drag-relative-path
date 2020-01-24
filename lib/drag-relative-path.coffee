@@ -10,7 +10,7 @@ generateTag = (fileExtension, extension, relativePath, fileName, textEditor) ->
         'css': '<link href="' + relativePath.replace(fileExtension, extension) + '" rel="stylesheet">\n'
         'html': '<a href="' + relativePath.replace(fileExtension, extension) + '"></a>\n'
         'php': '<a href="' + relativePath.replace(fileExtension, extension) + '"></a>\n'
-        'img': '<img src="' + relativePath + '" alt="' + fileName + '">\n'
+        'img': '<img src="' + relativePath + '" alt="">\n'
         'video': '<video src="' + relativePath + '" controls></video>\n'
         'audio': '<audio src="' + relativePath + '" controls></audio>\n'
     }[extension]
@@ -26,27 +26,24 @@ intOrExtDrag = (currentPathFileExtension, fileExtension, relativePath, fileName,
     audioArray = ['mp3', 'wav', 'ogg']
     videoArray = ['mp4', 'webm', 'ogv']
 
-    count = 0
-    while count < selectedFiles.length
-      selected = selectedFiles[count].file?.path || selectedFiles[count].path
-      if currentPathFileExtension.toString() == 'html'
-          if scriptArray.includes(fileExtension)
-              generateTag fileExtension, 'js', relative(currentPath, selected), fileName, textEditor
-          if linkArray.includes(fileExtension)
-              generateTag fileExtension, 'css', relative(currentPath, selected), fileName, textEditor
-          if imageArray.includes(fileExtension)
-              generateTag fileExtension, 'img', relative(currentPath, selected), fileName, textEditor
-          if htmlArray.includes(fileExtension)
-              generateTag fileExtension, 'html', relative(currentPath, selected), fileName, textEditor
-          if phpArray.includes(fileExtension)
-              generateTag fileExtension, 'php', relative(currentPath, selected), fileName, textEditor
-          if audioArray.includes(fileExtension)
-              generateTag fileExtension, 'audio', relative(currentPath, selected), fileName, textEditor
-          if videoArray.includes(fileExtension)
-              generateTag fileExtension, 'video', relative(currentPath, selected), fileName, textEditor
-      else
-        textEditor.insertText "'#{relative currentPath, selected}'" + '\n'
-      count++
+    selected = selectedFiles[count].file?.path || selectedFiles[0].path
+    if currentPathFileExtension.toString() == 'html'
+        if scriptArray.includes(fileExtension)
+            generateTag fileExtension, 'js', relative(currentPath, selected), fileName, textEditor
+        if linkArray.includes(fileExtension)
+            generateTag fileExtension, 'css', relative(currentPath, selected), fileName, textEditor
+        if imageArray.includes(fileExtension)
+            generateTag fileExtension, 'img', relative(currentPath, selected), fileName, textEditor
+        if htmlArray.includes(fileExtension)
+            generateTag fileExtension, 'html', relative(currentPath, selected), fileName, textEditor
+        if phpArray.includes(fileExtension)
+            generateTag fileExtension, 'php', relative(currentPath, selected), fileName, textEditor
+        if audioArray.includes(fileExtension)
+            generateTag fileExtension, 'audio', relative(currentPath, selected), fileName, textEditor
+        if videoArray.includes(fileExtension)
+            generateTag fileExtension, 'video', relative(currentPath, selected), fileName, textEditor
+    else
+      textEditor.insertText "'#{relative currentPath, selected}'" + '\n'
     return
 
 module.exports = activate: (state) ->
